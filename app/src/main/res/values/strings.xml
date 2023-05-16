@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Fitness</string>
+    <string name="welcome">Welcome to fitness</string>
+    <string name="workout">Workout</string>
+    <string name="step">StepCounter</string>
+    <string name="stepsText">Steps counter</string>
+    <string name="steps">123</string>
+    <string name="justSteps">Steps</string>
+</resources>
