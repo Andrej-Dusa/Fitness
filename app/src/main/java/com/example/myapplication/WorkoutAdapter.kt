@@ -1,40 +1,65 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.databinding.ItemBinding
+import com.ezatpanah.roomdatabase_youtube.db.Workout
 
-class WorkoutAdapter(private val workoutList: ArrayList<Workout>)
-    : RecyclerView.Adapter<WorkoutAdapter.WorkoutViewHolder>() {
+class WorkoutAdapter : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>(){
+    private lateinit var binding: ItemBinding
+    private lateinit var context: Context
 
-    var onItemClick: ((Workout)-> Unit)? = null
-    class WorkoutViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val imageView : ImageView = itemView.findViewById(R.id.idIVItem)
-        val textNameView: TextView = itemView.findViewById(R.id.idTVActivity)
-        val textTimeView: TextView = itemView.findViewById(R.id.idTVWorkoutTime)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutAdapter.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        binding = ItemBinding.inflate(inflater, parent, false)
+        context = parent.context
+        return ViewHolder()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return WorkoutViewHolder(view)
+    override fun onBindViewHolder(holder: WorkoutAdapter.ViewHolder, position: Int) {
+        holder.bind(differ.currentList[position])
+        holder.setIsRecyclable(false)
     }
 
     override fun getItemCount(): Int {
-        return workoutList.size;
+        return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: WorkoutViewHolder, position: Int) {
-        val workout = workoutList[position]
-        holder.imageView.setImageResource(workout.image)
-        holder.textNameView.text = workout.name
-        holder.textTimeView.text = "Time: " + workout.time.toString() + " min"
+    inner class ViewHolder : RecyclerView.ViewHolder(binding.root) {
 
-        holder.itemView.setOnClickListener{
-            onItemClick?.invoke(workout)
+        @SuppressLint("SetTextI18n")
+        fun bind(item: Workout) {
+            //InitView
+            binding.apply {
+                //Set text
+                idTVActivity.text = item.name
+                idTVWorkoutTime.text= item.time.toString()
+
+                root.setOnClickListener {
+                    val intent=Intent(context,WorkoutDetailActivity::class.java)
+                    intent.putExtra("bundle_workout_id", item.id)
+                    context.startActivity(intent)
+                }
+
+            }
+        }
+    }
+
+    private val differCallback = object : DiffUtil.ItemCallback<Workout>() {
+        override fun areItemsTheSame(oldItem: Workout, newItem: Workout): Boolean {
+            return oldItem.id == newItem.id
         }
 
+        override fun areContentsTheSame(oldItem: Workout, newItem: Workout): Boolean {
+            return oldItem == newItem
+        }
     }
+
+    val differ = AsyncListDiffer(this, differCallback)
 }

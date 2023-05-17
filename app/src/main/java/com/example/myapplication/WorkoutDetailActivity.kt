@@ -3,63 +3,85 @@ package com.example.myapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.widget.ImageView
-import android.widget.TextView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.room.Room
+import com.example.myapplication.databinding.ActivityWorkoutDetailBinding
+import com.ezatpanah.roomdatabase_youtube.db.Workout
 import java.util.Locale
 
 class WorkoutDetailActivity : AppCompatActivity() {
-    private lateinit var fab1: FloatingActionButton
-    private lateinit var fab2: FloatingActionButton
-    private lateinit var textClockView: TextView
     private var mTimerRunning = false;
     private lateinit var countDownTimer: CountDownTimer
     private var timeLeft: Long = 0
     private var timeStart: Long = 0
+
+    private lateinit var binding: ActivityWorkoutDetailBinding
+    private val workoutDB: WorkoutDatabase by lazy {
+        Room.databaseBuilder(this, WorkoutDatabase::class.java, "workoutsDTB")
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    private lateinit var workoutEntity: Workout
+    private var workoutId = 0
+    private var defaultName = ""
+    private var defaultDesc = ""
+    private var defaultTime:Int = 0
+    private var defaultCalories:Int = 0
+    private var defaultImg = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_workout_detail)
+        binding = ActivityWorkoutDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val workout = intent.getParcelableExtra<Workout>("workout")
-        if (workout != null){
-            val textNameView: TextView = findViewById(R.id.idTVWorkoutDetail)
-            textClockView= findViewById(R.id.idTVClock)
-            val textTextView: TextView = findViewById(R.id.idTVWorkoutDetailText)
-            val textTimeView: TextView = findViewById(R.id.idTVWorkoutDetailTime)
-            val textCaloriesView: TextView = findViewById(R.id.idTVWorkoutDetailCalories)
-            val imageView: ImageView = findViewById(R.id.idIVWorkoutDetail)
+        intent.extras?.let {
+            workoutId = it.getInt("bundle_workout_id")
+        }
 
-            fab1 = findViewById(R.id.idFAB1)
-            fab2 = findViewById(R.id.idFAB2)
+        binding.apply {
+            defaultName = workoutDB.dao().getWorkout(workoutId).name
+            defaultDesc = workoutDB.dao().getWorkout(workoutId).text
+            defaultTime = workoutDB.dao().getWorkout(workoutId).time
+            defaultCalories = workoutDB.dao().getWorkout(workoutId).calories
+            defaultImg = workoutDB.dao().getWorkout(workoutId).img
 
-            timeLeft = workout.time.toLong() * 60000
-            timeStart = workout.time.toLong() * 60000
+            idTVWorkoutDetail.text = defaultName
+            idTVWorkoutDetailText.text = getString(R.string.descriptionText) + defaultDesc
+            idTVWorkoutDetailCalories.text = getString(R.string.caloriesText) + defaultCalories.toString() + " KCAL"
+            idTVWorkoutDetailTime.text = getString(R.string.timeText) + defaultTime.toString() + " min"
+            idTVClock.text = defaultTime.toString()
+            idIVWorkoutDetail.setImageResource(defaultImg)
 
-            textNameView.text = workout.name
-            textTextView.text =getString(R.string.descriptionText) +  workout.text
-            updateClock()
-            textTimeView.text = getString(R.string.timeText) + workout.time.toString() + " min"
-            textCaloriesView.text = getString(R.string.caloriesText) + workout.calories.toString() + " KCAL"
-            imageView.setImageResource(workout.image)
-
-            fab1.setOnClickListener{
-                if(mTimerRunning) {
-                    pauseTimer()
-                } else {
-                    startTimer()
-                }
-            }
-
-            fab2.setOnClickListener{
-                resetTimer()
+            btnDelete.setOnClickListener {
+                workoutEntity= Workout(workoutId,defaultName,defaultDesc,defaultTime,defaultCalories,defaultImg)
+                workoutDB.dao().deleteWorkout(workoutEntity)
+                finish()
             }
         }
+
+        timeLeft = defaultTime.toLong() * 60000
+        timeStart = defaultTime.toLong() * 60000
+
+        binding.idFAB1.setOnClickListener{
+            if(mTimerRunning) {
+                pauseTimer()
+            } else {
+                startTimer()
+            }
+        }
+
+        binding.idFAB2.setOnClickListener{
+            resetTimer()
+        }
+
+        updateClock()
+
     }
 
     private fun resetTimer() {
         countDownTimer.cancel()
         mTimerRunning = false
-        fab1.setImageResource(R.drawable.ic_play)
+        binding.idFAB1.setImageResource(R.drawable.ic_play)
         timeLeft = timeStart
         updateClock()
     }
@@ -67,7 +89,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
     private fun pauseTimer() {
         countDownTimer.cancel()
         mTimerRunning = false
-        fab1.setImageResource(R.drawable.ic_play)
+        binding.idFAB1.setImageResource(R.drawable.ic_play)
     }
 
     private fun startTimer() {
@@ -79,11 +101,11 @@ class WorkoutDetailActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 mTimerRunning = false
-                textClockView.text = getString(R.string.finish)
+                binding.idTVClock.text = getString(R.string.finish)
             }
         }.start()
         mTimerRunning = true
-        fab1.setImageResource(R.drawable.ic_pause)
+        binding.idFAB1.setImageResource(R.drawable.ic_pause)
     }
 
     private fun updateClock() {
@@ -91,6 +113,6 @@ class WorkoutDetailActivity : AppCompatActivity() {
         val seconds: Int = ((timeLeft / 1000)%60).toInt()
 
         val timeLeftString = String.format(Locale.getDefault(),"%02d:%02d", minutes, seconds)
-        textClockView.text = timeLeftString
+        binding.idTVClock.text = timeLeftString
     }
 }

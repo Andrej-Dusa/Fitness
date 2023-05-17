@@ -4,36 +4,64 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.example.myapplication.databinding.ActivityWorkoutAkitivityBinding
 
 class WorkoutAkitivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var workoutList: ArrayList<Workout>
-    private lateinit var workoutAdapter: WorkoutAdapter
+    lateinit var binding: ActivityWorkoutAkitivityBinding
+
+    // creating object of our database
+    private val workoutDB : WorkoutDatabase by lazy {
+        Room.databaseBuilder(this,WorkoutDatabase::class.java, "workoutsDTB")
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+    private val workoutAdapter by lazy { WorkoutAdapter() }
+    private var totalMin = 0
+    private var totalCal = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_workout_akitivity)
+        binding=ActivityWorkoutAkitivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        recyclerView = findViewById(R.id.idWorkoutRV)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        workoutList = ArrayList()
-
-        workoutList.add(Workout(R.drawable.plank, "Plank", "Best for core muscles", 5, 30))
-        workoutList.add(Workout(R.drawable.crunches, "Crunches", "Best for upper core muscles", 3, 20))
-        workoutList.add(Workout(R.drawable.pushups, "Push ups", "Really good for biceps and triceps muscles", 2,35))
-        workoutList.add(Workout(R.drawable.squat, "Squats", "Good for exercising thigh muscles", 6,30))
-        workoutList.add(Workout(R.drawable.lunge, "Lunges", "Good for exercising thigh muscles", 4,35))
-        workoutList.add(Workout(R.drawable.jack, "Hollow hold to jackknifes", "Best exercise for whole body", 3,50))
-
-        workoutAdapter = WorkoutAdapter(workoutList)
-        recyclerView.adapter = workoutAdapter
-
-        workoutAdapter.onItemClick = {
-            val intent = Intent(this, WorkoutDetailActivity::class.java)
-            intent.putExtra("workout", it)
-            startActivity(intent)
+        binding.btnAdd.setOnClickListener {
+            startActivity(Intent(this,AddWorkoutActivity::class.java))
         }
+
+        workoutDB.dao().getAllWorkouts().forEach {
+            totalMin += it.time
+            totalCal += it.calories
+        }
+        binding.idTVCalories.text = totalCal.toString()
+        binding.idTVTime.text = totalMin.toString()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkItem()
+    }
+
+    private fun checkItem(){
+        binding.apply {
+            workoutAdapter.differ.submitList(workoutDB.dao().getAllWorkouts())
+            setupRecyclerView()
+            totalMin = 0
+            totalCal = 0
+            workoutDB.dao().getAllWorkouts().forEach {
+                totalMin += it.time
+                totalCal += it.calories
+            }
+            idTVCalories.text = totalCal.toString()
+            idTVTime.text = totalMin.toString()
+        }
+    }
+
+    private fun setupRecyclerView(){
+        binding.idWorkoutRV.apply {
+            layoutManager=LinearLayoutManager(this@WorkoutAkitivity)
+            adapter=workoutAdapter
+        }
+
     }
 }

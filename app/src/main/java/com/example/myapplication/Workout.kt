@@ -1,37 +1,21 @@
-package com.example.myapplication
+package com.ezatpanah.roomdatabase_youtube.db
 
-import android.os.Parcel
-import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Workout(val image:Int, val name:String, val text:String, val time:Int, val calories:Int) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString()!!,
-        parcel.readString()!!,
-        parcel.readInt(),
-        parcel.readInt()
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(image)
-        parcel.writeString(name)
-        parcel.writeString(text)
-        parcel.writeInt(time)
-        parcel.writeInt(calories)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<Workout> {
-        override fun createFromParcel(parcel: Parcel): Workout {
-            return Workout(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Workout?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
+@Entity(tableName = "workouts")
+data class Workout(
+    @PrimaryKey(autoGenerate = true)
+    val id:Int,
+    @ColumnInfo(name = "name")
+    val name:String,
+    @ColumnInfo(name = "text")
+    val text: String,
+    @ColumnInfo(name = "time")
+    val time: Int,
+    @ColumnInfo(name = "calories")
+    val calories: Int,
+    @ColumnInfo(name = "img")
+    val img: Int
+)
