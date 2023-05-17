@@ -47,22 +47,21 @@ class StepCounterAktivity : AppCompatActivity(), SensorEventListener {
 
     private fun startCounting() {
         running = true
-        var sensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        if(sensor != null){
-            sensorManager?.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI)
+        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
+        if (sensor != null) {
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
         } else {
-            Toast.makeText(this, "Sensor not found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Step detector sensor not found", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onSensorChanged(p0: SensorEvent?) {
-        if(running){
-
-            if (p0 != null) {
-                stepTV.setText("" + (p0.values[0]))
-            }
+    override fun onSensorChanged(event: SensorEvent) {
+        if (running && event.sensor.type == Sensor.TYPE_STEP_DETECTOR) {
+            steps++
+            stepTV.text = steps.toString()
         }
     }
+
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
