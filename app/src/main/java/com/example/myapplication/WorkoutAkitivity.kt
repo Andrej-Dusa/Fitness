@@ -20,12 +20,12 @@ class WorkoutAkitivity : AppCompatActivity() {
 
         workoutList = ArrayList()
 
-        workoutList.add(Workout(R.drawable.workout, "Plank", "Dobre pre biceps", 10, 20))
-        workoutList.add(Workout(R.drawable.workout, "Plank", "Dobre pre biceps", 10, 20))
-        workoutList.add(Workout(R.drawable.workout, "Plank", "Dobre pre biceps", 10,20))
-        workoutList.add(Workout(R.drawable.workout, "Plank", "Dobre pre biceps", 10,20))
-        workoutList.add(Workout(R.drawable.workout, "Plank", "Dobre pre biceps", 10,20))
-        workoutList.add(Workout(R.drawable.workout, "Plank", "Dobre pre biceps", 10,20))
+        workoutList.add(Workout(R.drawable.plank, "Plank", "Best for core muscles", 5, 30))
+        workoutList.add(Workout(R.drawable.crunches, "Crunches", "Best for upper core muscles", 3, 20))
+        workoutList.add(Workout(R.drawable.pushups, "Push ups", "Really good for biceps and triceps muscles", 2,35))
+        workoutList.add(Workout(R.drawable.squat, "Squats", "Good for exercising thigh muscles", 6,30))
+        workoutList.add(Workout(R.drawable.lunge, "Lunges", "Good for exercising thigh muscles", 4,35))
+        workoutList.add(Workout(R.drawable.jack, "Hollow hold to jackknifes", "Best exercise for whole body", 3,50))
 
         workoutAdapter = WorkoutAdapter(workoutList)
         recyclerView.adapter = workoutAdapter

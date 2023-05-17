@@ -13,7 +13,7 @@
         android:textColor="@color/white"
         android:fontFamily="@font/abel"
         android:text="@string/workout"
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:padding="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="15dp"
@@ -58,6 +58,8 @@
                 android:fontFamily="@font/abel"
                 android:textColor="@color/white"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textAlignment="center"
                 >
 
             </TextView>
@@ -72,6 +74,8 @@
                 android:textSize="18sp"
                 android:fontFamily="@font/abel"
                 android:textColor="@color/white"
+                android:gravity="center"
+                android:textAlignment="center"
                 >
 
             </TextView>
@@ -85,6 +89,8 @@
                 android:textSize="18sp"
                 android:fontFamily="@font/abel"
                 android:textColor="@color/white"
+                android:gravity="center"
+                android:textAlignment="center"
                 >
 
             </TextView>

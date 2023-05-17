@@ -8,10 +8,13 @@
     <string name="justSteps">Steps</string>
     <string name="activity">Cvik</string>
     <string name="time">Time</string>
-    <string name="number">150</string>
+    <string name="number">200</string>
     <string name="KCAL">KCAL</string>
-    <string name="minutes">50-55</string>
+    <string name="minutes">30–35</string>
     <string name="min">MIN</string>
     <string name="clock">00:00</string>
     <string name="finish">Done!</string>
+    <string name="descriptionText">"Description: "</string>
+    <string name="timeText">"Time: "</string>
+    <string name="caloriesText">"Calories: "</string>
 </resources>

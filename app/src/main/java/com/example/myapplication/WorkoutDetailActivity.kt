@@ -36,10 +36,10 @@ class WorkoutDetailActivity : AppCompatActivity() {
             timeStart = workout.time.toLong() * 60000
 
             textNameView.text = workout.name
-            textTextView.text = workout.text
+            textTextView.text =getString(R.string.descriptionText) +  workout.text
             updateClock()
-            textTimeView.text = "Time: " + workout.time.toString() + " min"
-            textCaloriesView.text = "Calories: " + workout.calories.toString() + " KCAL"
+            textTimeView.text = getString(R.string.timeText) + workout.time.toString() + " min"
+            textCaloriesView.text = getString(R.string.caloriesText) + workout.calories.toString() + " KCAL"
             imageView.setImageResource(workout.image)
 
             fab1.setOnClickListener{
