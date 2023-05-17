@@ -59,7 +59,7 @@ class StepCounterAktivity : AppCompatActivity(), SensorEventListener {
         if(running){
 
             if (p0 != null) {
-                stepTV.setText("" + p0.values[0])
+                stepTV.setText("" + (p0.values[0]))
             }
         }
     }
