@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_color"
+    tools:context=".WorkoutDetailActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:fontFamily="@font/abel"
+        android:text="@string/workout"
+        android:textSize="20sp"
+        android:padding="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginEnd="4dp"
+        android:textStyle="bold"
+        android:id="@+id/idTVWorkoutDetail">
+
+    </TextView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/idTVWorkoutDetail">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:background="@color/back_color"
+                android:src="@drawable/workout"
+                android:id="@+id/idIVWorkoutDetail">
+
+            </ImageView>
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idTVWorkoutDetailCalories"
+                android:padding="5dp"
+                android:text="@string/KCAL"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idTVWorkoutDetailTime"
+                android:padding="5dp"
+                android:text="@string/time"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/white"
+                >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idTVWorkoutDetailText"
+                android:padding="5dp"
+                android:text="@string/activity"
+                android:textSize="18sp"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/white"
+                >
+
+            </TextView>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

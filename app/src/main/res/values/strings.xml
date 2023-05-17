@@ -6,4 +6,10 @@
     <string name="stepsText">Steps counter</string>
     <string name="steps">123</string>
     <string name="justSteps">Steps</string>
+    <string name="activity">Cvik</string>
+    <string name="time">Time</string>
+    <string name="number">150</string>
+    <string name="KCAL">KCAL</string>
+    <string name="minutes">50-55</string>
+    <string name="min">MIN</string>
 </resources>
