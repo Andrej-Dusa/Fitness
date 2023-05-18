@@ -13,14 +13,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //inicializacia premmenych
         workoutLL = findViewById(R.id.idLLWorkout)
         stepCounterLL = findViewById(R.id.idLLStepCounter)
 
+        //nastavenie tlacidla pre spustenie aktivity pre zoznam cvikov
         workoutLL.setOnClickListener {
             val i = Intent(this@MainActivity, WorkoutAkitivity::class.java)
             startActivity(i)
         }
 
+        //nastavenie tlacidla pre spustenie aktivity pre krokomer
         stepCounterLL.setOnClickListener {
             val i = Intent(this@MainActivity, StepCounterAktivity::class.java)
             startActivity(i)

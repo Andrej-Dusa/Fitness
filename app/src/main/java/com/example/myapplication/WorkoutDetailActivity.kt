@@ -14,7 +14,9 @@ class WorkoutDetailActivity : AppCompatActivity() {
     private var timeLeft: Long = 0
     private var timeStart: Long = 0
 
+    //data binding pre pistup k layotu
     private lateinit var binding: ActivityWorkoutDetailBinding
+    //vytvorenie databazy
     private val workoutDB: WorkoutDatabase by lazy {
         Room.databaseBuilder(this, WorkoutDatabase::class.java, "workoutsDTB")
             .allowMainThreadQueries()
@@ -22,6 +24,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
             .build()
     }
 
+    //premenne sluziace na ulozenie udjov z tabulky a sprehladenenie kodu
     private lateinit var workoutEntity: Workout
     private var workoutId = 0
     private var defaultName = ""
@@ -34,17 +37,20 @@ class WorkoutDetailActivity : AppCompatActivity() {
         binding = ActivityWorkoutDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //prebratie id cviku
         intent.extras?.let {
             workoutId = it.getInt("bundle_workout_id")
         }
 
         binding.apply {
+            //vyber udajov z tabulky podla id cviku
             defaultName = workoutDB.dao().getWorkout(workoutId).name
             defaultDesc = workoutDB.dao().getWorkout(workoutId).text
             defaultTime = workoutDB.dao().getWorkout(workoutId).time
             defaultCalories = workoutDB.dao().getWorkout(workoutId).calories
             defaultImg = workoutDB.dao().getWorkout(workoutId).img
 
+            //nastavenie hodnot v layoute
             idTVWorkoutDetail.text = defaultName
             idTVWorkoutDetailText.text = getString(R.string.descriptionText) + defaultDesc
             idTVWorkoutDetailCalories.text = getString(R.string.caloriesText) + defaultCalories.toString() + " KCAL"
@@ -52,6 +58,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
             idTVClock.text = defaultTime.toString()
             idIVWorkoutDetail.setImageResource(defaultImg)
 
+            //nastavenie odstranenia cviku na dane tlacidlo
             btnDelete.setOnClickListener {
                 workoutEntity= Workout(workoutId,defaultName,defaultDesc,defaultTime,defaultCalories,defaultImg)
                 workoutDB.dao().deleteWorkout(workoutEntity)
@@ -62,6 +69,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
         timeLeft = defaultTime.toLong() * 60000
         timeStart = defaultTime.toLong() * 60000
 
+        //nastavenie tlacidla pre spustenie a zastavenie casomiery
         binding.idFAB1.setOnClickListener{
             if(mTimerRunning) {
                 pauseTimer()
@@ -70,6 +78,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
             }
         }
 
+        //nastavenie tlacidla pre reset casomiery
         binding.idFAB2.setOnClickListener{
             resetTimer()
         }
@@ -78,6 +87,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
 
     }
 
+    //reset casomiery
     private fun resetTimer() {
         countDownTimer.cancel()
         mTimerRunning = false
@@ -86,19 +96,23 @@ class WorkoutDetailActivity : AppCompatActivity() {
         updateClock()
     }
 
+    //zastavenie casomiery
     private fun pauseTimer() {
         countDownTimer.cancel()
         mTimerRunning = false
         binding.idFAB1.setImageResource(R.drawable.ic_play)
     }
 
+    //spustenie casomiery
     private fun startTimer() {
+        //inicializacia CountDowTimeru na znizovanie o 1 sekundu
         countDownTimer = object : CountDownTimer(timeLeft, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 timeLeft = millisUntilFinished
                 updateClock()
             }
 
+            //co sa ma stat ak cas uplynie
             override fun onFinish() {
                 mTimerRunning = false
                 binding.idTVClock.text = getString(R.string.finish)
@@ -108,6 +122,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
         binding.idFAB1.setImageResource(R.drawable.ic_pause)
     }
 
+    //Update textView casomeru
     private fun updateClock() {
         val minutes: Int = ((timeLeft / 1000)/60).toInt()
         val seconds: Int = ((timeLeft / 1000)%60).toInt()
