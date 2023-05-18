@@ -17,4 +17,9 @@
     <string name="descriptionText">"Description: "</string>
     <string name="timeText">"Time: "</string>
     <string name="caloriesText">"Calories: "</string>
+    <string name="hitnt_name_of_workout">Name of workout</string>
+    <string name="hint_time">Time</string>
+    <string name="hint_calories">Calories</string>
+    <string name="hint_img">Img</string>
+    <string name="hint_text">Text</string>
 </resources>
