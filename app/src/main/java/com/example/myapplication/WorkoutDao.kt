@@ -3,24 +3,24 @@ package com.example.myapplication
 import androidx.room.*
 import com.ezatpanah.roomdatabase_youtube.db.Workout
 
+//interface definujuci ukony ktore sa daju reobit nad tabukou z databazy
 @Dao
 interface WorkoutDao {
 
-    // onConflict is used for replacing old data and continue the transaction with the new data.
+    // onConflict sa pouziva aby sa stare data nahradily novymi ak najde zhodu.
+    //pridaie cviku do tabulky
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWorkout(noteEntity: Workout)
 
-    @Update
-    fun updateWorkout(noteEntity: Workout)
-
+    //odstranienie cviku z tabulky
     @Delete
     fun deleteWorkout(noteEntity: Workout)
 
-    // getting all the notes and showing them to the recyclerView in the WorkoutActivity
+    //vratenie vsetkych cvikov v zozname
     @Query("SELECT * FROM 'workouts' ORDER BY id DESC")
     fun getAllWorkouts() : MutableList<Workout>
 
-    // selecting one note at a time
+    //vyberanie jedneho prvku z tabulky
     @Query("SELECT * FROM 'workouts' WHERE id LIKE :id")
     fun getWorkout(id : Int) : Workout
 }

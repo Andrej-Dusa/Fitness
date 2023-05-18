@@ -31,17 +31,18 @@ class WorkoutAdapter : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>(){
         return differ.currentList.size
     }
 
+    //vnutorna pomocna trieda na naplnenie RecyclerView
     inner class ViewHolder : RecyclerView.ViewHolder(binding.root) {
-
+        //ztlmenie vynimky
         @SuppressLint("SetTextI18n")
         fun bind(item: Workout) {
-            //InitView
             binding.apply {
-                //Set text
+                //nastavenie hodnot v layoute
                 idTVActivity.text = item.name
                 idTVWorkoutTime.text = item.time.toString() + " min"
                 idIVItem.setImageResource(item.img)
 
+                //nastavenie co sa ma stat po kliknuti na cvik zo zoznamu
                 root.setOnClickListener {
                     val intent=Intent(context,WorkoutDetailActivity::class.java)
                     intent.putExtra("bundle_workout_id", item.id)

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//datova trieda predstavujuca entitu cviiku z tabulky v databaze
 @Entity(tableName = "workouts")
 data class Workout(
     @PrimaryKey(autoGenerate = true)
