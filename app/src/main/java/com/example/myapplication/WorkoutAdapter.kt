@@ -39,7 +39,8 @@ class WorkoutAdapter : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>(){
             binding.apply {
                 //Set text
                 idTVActivity.text = item.name
-                idTVWorkoutTime.text= item.time.toString()
+                idTVWorkoutTime.text = item.time.toString() + " min"
+                idIVItem.setImageResource(item.img)
 
                 root.setOnClickListener {
                     val intent=Intent(context,WorkoutDetailActivity::class.java)

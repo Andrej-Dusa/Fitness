@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.myapplication.databinding.ActivityWorkoutAkitivityBinding
+import com.ezatpanah.roomdatabase_youtube.db.Workout
 
 class WorkoutAkitivity : AppCompatActivity() {
     lateinit var binding: ActivityWorkoutAkitivityBinding

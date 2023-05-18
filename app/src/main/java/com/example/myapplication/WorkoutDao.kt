@@ -23,5 +23,4 @@ interface WorkoutDao {
     // selecting one note at a time
     @Query("SELECT * FROM 'workouts' WHERE id LIKE :id")
     fun getWorkout(id : Int) : Workout
-
 }
